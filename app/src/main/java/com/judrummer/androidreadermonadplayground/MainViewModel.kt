@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.github.kittinunf.result.Result
-import com.judrummer.androidreadermonadplayground.domain.LoginUseCaseDependencies
-import com.judrummer.androidreadermonadplayground.domain.UserProfile
-import com.judrummer.androidreadermonadplayground.domain.loginUseCase
+import com.judrummer.androidreadermonadplayground.data.AppPreference
+import com.judrummer.androidreadermonadplayground.data.AppPreferenceImpl
+import com.judrummer.androidreadermonadplayground.domain.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -20,8 +20,13 @@ sealed class MainState {
     data class Error(val throwable: Throwable) : MainState()
 }
 
+class LoginUseCaseDependenciesImpl : LoginUseCaseDependencies {
+    override val userProfileMapper: UserProfileMapper = UserProfileMapperImpl()
+    override val appPreference: AppPreference = AppPreferenceImpl()
+}
+
 class MainViewModel(
-        private val loginUseCaseDependencies: LoginUseCaseDependencies
+        private val loginUseCaseDependencies: LoginUseCaseDependencies = LoginUseCaseDependenciesImpl()
 ) : ViewModel(), CoroutineScope {
 
     private val job = Job()
