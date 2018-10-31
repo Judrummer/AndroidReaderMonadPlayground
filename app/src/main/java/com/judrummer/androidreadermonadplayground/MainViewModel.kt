@@ -3,23 +3,29 @@ package com.judrummer.androidreadermonadplayground
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.github.kittinunf.result.Result
+import com.judrummer.androidreadermonadplayground.domain.LoginUseCaseDependencies
+import com.judrummer.androidreadermonadplayground.domain.UserProfile
+import com.judrummer.androidreadermonadplayground.domain.loginUseCase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.android.Main
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 sealed class MainState {
     object Initialize : MainState()
     object Loading : MainState()
-    data class Success(val userProfile: String) : MainState()
+    data class Success(val userProfile: UserProfile) : MainState()
     data class Error(val throwable: Throwable) : MainState()
 }
 
-class MainViewModel : ViewModel(), CoroutineScope {
+class MainViewModel(
+        private val loginUseCaseDependencies: LoginUseCaseDependencies
+) : ViewModel(), CoroutineScope {
 
     private val job = Job()
+
     override val coroutineContext: CoroutineContext
         get() = job + Dispatchers.Main
 
@@ -27,8 +33,23 @@ class MainViewModel : ViewModel(), CoroutineScope {
     val state: LiveData<MainState> = _state
 
     fun login(username: String, password: String) {
+        _state.value = MainState.Loading
         launch {
+            launch {
+                val result = loginUseCase(username, password)
+                        .runReader(loginUseCaseDependencies.appPreference)
+                        .runReader(loginUseCaseDependencies.userProfileMapper)
 
+                when (result) {
+                    is Result.Success -> {
+                        _state.value = MainState.Success(result.value)
+                    }
+                    is Result.Failure -> {
+
+                        _state.value = MainState.Error(result.error)
+                    }
+                }
+            }
         }
     }
 

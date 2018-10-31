@@ -15,6 +15,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
 
+        //TODO: ui render
         viewModel.state.observe(this, Observer { state ->
             when (state) {
                 is MainState.Initialize -> {

@@ -32,6 +32,9 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.0.0-alpha1"
     implementation "androidx.lifecycle:lifecycle-livedata:2.0.0-alpha1"
     implementation "androidx.lifecycle:lifecycle-extensions:2.0.0-alpha1"
+    implementation 'io.paperdb:paperdb:2.6'
+    compile 'com.github.kittinunf.fuel:fuel-android:1.16.0'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
