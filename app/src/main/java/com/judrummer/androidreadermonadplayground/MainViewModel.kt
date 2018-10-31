@@ -40,19 +40,16 @@ class MainViewModel(
     fun login(username: String, password: String) {
         _state.value = MainState.Loading
         launch {
-            launch {
-                val result = loginUseCase(username, password)
-                        .runReader(loginUseCaseDependencies.appPreference)
-                        .runReader(loginUseCaseDependencies.userProfileMapper)
+            val result = loginUseCase(username, password)
+                    .runReader(loginUseCaseDependencies.appPreference)
+                    .runReader(loginUseCaseDependencies.userProfileMapper)
 
-                when (result) {
-                    is Result.Success -> {
-                        _state.value = MainState.Success(result.value)
-                    }
-                    is Result.Failure -> {
-
-                        _state.value = MainState.Error(result.error)
-                    }
+            when (result) {
+                is Result.Success -> {
+                    _state.value = MainState.Success(result.value)
+                }
+                is Result.Failure -> {
+                    _state.value = MainState.Error(result.error)
                 }
             }
         }
