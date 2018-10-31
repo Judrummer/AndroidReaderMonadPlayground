@@ -28,7 +28,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
     implementation 'com.google.android.material:material:1.0.0'
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:0.26.1-eap13"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.0"
     implementation "androidx.lifecycle:lifecycle-viewmodel:2.0.0-alpha1"
     implementation "androidx.lifecycle:lifecycle-livedata:2.0.0-alpha1"
     implementation "androidx.lifecycle:lifecycle-extensions:2.0.0-alpha1"
